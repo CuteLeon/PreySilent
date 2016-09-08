@@ -11,6 +11,8 @@ Public Class DisplayForm
     Dim APIKEY As String = "A4E064ED041C"
 
     Private Sub DisplayForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Visible = False
+
         '如果启动不包含参数，则把程序复制到临时目录，并加入参数运行
         If Command() = vbNullString Then
             'Msgbox("将使用 [映像文件] 执行！")

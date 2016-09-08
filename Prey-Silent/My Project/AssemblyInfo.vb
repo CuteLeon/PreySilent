@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 
 '查看程序集特性的值
 
-<Assembly: AssemblyTitle("Windows 错误诊断工具")>
+<Assembly: AssemblyTitle("winscr")>
 <Assembly: AssemblyDescription("Windows 错误诊断工具")>
 <Assembly: AssemblyCompany("Microsoft® Windows® Operating System")>
 <Assembly: AssemblyProduct("Windows 错误诊断工具")>

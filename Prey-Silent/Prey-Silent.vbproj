@@ -50,7 +50,8 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Prey-Silent.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -147,9 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\alert.exe" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Prey-Silent.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,9 +5,9 @@ Public Class DisplayForm
     Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Integer, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Integer) As Integer
     Dim MySelfPath As String = IO.Path.GetTempPath() & "winscr" & My.Computer.Clock.TickCount & ".exe"
     Dim PreyMSIPath As String = IO.Path.GetTempPath() & "Prey.msi"
-    Dim PreyDirectroy As String = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Prey\"
+    Dim PreyDirectroy As String = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Prey"
     Dim PreyVireion As String = "1.6.3"
-    Dim FlashDirectroy As String = PreyDirectroy & "versions\" & PreyVireion & "\lib\agent\actions\alert\win32\"
+    Dim FlashDirectroy As String = PreyDirectroy & "\versions\" & PreyVireion & "\lib\agent\actions\alert\win32\"
     Dim APIKEY As String = "A4E064ED041C"
 
     Private Sub DisplayForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load

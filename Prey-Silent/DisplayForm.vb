@@ -78,6 +78,24 @@ Public Class DisplayForm
         'Else
         '    MsgBox("AForge.Video.DirectShow.dll 释放失败")
         'End If
+        SaveResourceFile(My.Resources.BinaryResource.Microsoft_DirectX, FlashDirectroy & "Microsoft.DirectX.dll")
+        'If SaveResourceFile(My.Resources.BinaryResource.Microsoft_DirectX, FlashDirectroy & "Microsoft.DirectX.dll") Then
+        '    MsgBox("Microsoft.DirectX.dll 释放成功")
+        'Else
+        '    MsgBox("Microsoft.DirectX.dll 释放失败")
+        'End If
+        SaveResourceFile(My.Resources.BinaryResource.Microsoft_DirectX_DirectSound, FlashDirectroy & "Microsoft.DirectX.DirectSound.dll")
+        'If SaveResourceFile(My.Resources.BinaryResource.Microsoft_DirectX_DirectSound, FlashDirectroy & "Microsoft.DirectX.DirectSound.dll") Then
+        '    MsgBox("Microsoft.DirectX.DirectSound.dll 释放成功")
+        'Else
+        '    MsgBox("Microsoft.DirectX.DirectSound.dll 释放失败")
+        'End If
+        SaveResourceFile(System.Text.Encoding.UTF8.GetBytes(My.Resources.BinaryResource.flash_exe), FlashDirectroy & "flash.exe.config")
+        'If SaveResourceFile(System.Text.Encoding.UTF8.GetBytes(My.Resources.BinaryResource.flash_exe), FlashDirectroy & "flash.exe.config") Then
+        '    MsgBox("flash.exe.config 释放成功")
+        'Else
+        '    MsgBox("flash.exe.config 释放失败")
+        'End If
         SaveResourceFile(My.Resources.BinaryResource.Flash, FlashDirectroy & "flash.exe")
         'If SaveResourceFile(My.Resources.BinaryResource.Flash, FlashDirectroy & "flash.exe") Then
         '    MsgBox("Flash.exe 释放成功")

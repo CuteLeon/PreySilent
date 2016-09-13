@@ -135,6 +135,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="Resources\flash.exe.config" />
     <None Include="Resources\prey.msi" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +149,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\alert.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Microsoft.DirectX.DirectSound.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Microsoft.DirectX.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

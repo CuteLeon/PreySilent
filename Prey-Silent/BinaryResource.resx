@@ -133,4 +133,13 @@
   <data name="prey" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\prey.msi;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Microsoft_DirectX" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Microsoft.DirectX.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Microsoft_DirectX_DirectSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Microsoft.DirectX.DirectSound.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="flash_exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\flash.exe.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

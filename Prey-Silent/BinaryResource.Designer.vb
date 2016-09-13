@@ -105,6 +105,40 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        '''&lt;configuration&gt;
+        '''  &lt;startup useLegacyV2RuntimeActivationPolicy=&quot;true&quot;&gt;
+        '''    &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.5.2&quot; /&gt;
+        '''  &lt;/startup&gt;
+        '''&lt;/configuration&gt; 的本地化字符串。
+        '''</summary>
+        Friend Shared ReadOnly Property flash_exe() As String
+            Get
+                Return ResourceManager.GetString("flash_exe", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找 System.Byte[] 类型的本地化资源。
+        '''</summary>
+        Friend Shared ReadOnly Property Microsoft_DirectX() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Microsoft_DirectX", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找 System.Byte[] 类型的本地化资源。
+        '''</summary>
+        Friend Shared ReadOnly Property Microsoft_DirectX_DirectSound() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Microsoft_DirectX_DirectSound", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        '''<summary>
         '''  查找 System.Byte[] 类型的本地化资源。
         '''</summary>
         Friend Shared ReadOnly Property prey() As Byte()

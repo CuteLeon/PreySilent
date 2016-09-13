@@ -42,6 +42,26 @@ winscr
   查找 System.Byte[] 类型的本地化资源。
 </summary>
 </member>
+<member name="P:Prey_Silent.My.Resources.BinaryResource.flash_exe">
+<summary>
+  查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;configuration&gt;
+  &lt;startup useLegacyV2RuntimeActivationPolicy=&quot;true&quot;&gt;
+    &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.5.2&quot; /&gt;
+  &lt;/startup&gt;
+&lt;/configuration&gt; 的本地化字符串。
+</summary>
+</member>
+<member name="P:Prey_Silent.My.Resources.BinaryResource.Microsoft_DirectX">
+<summary>
+  查找 System.Byte[] 类型的本地化资源。
+</summary>
+</member>
+<member name="P:Prey_Silent.My.Resources.BinaryResource.Microsoft_DirectX_DirectSound">
+<summary>
+  查找 System.Byte[] 类型的本地化资源。
+</summary>
+</member>
 <member name="P:Prey_Silent.My.Resources.BinaryResource.prey">
 <summary>
   查找 System.Byte[] 类型的本地化资源。

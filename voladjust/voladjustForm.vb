@@ -15,14 +15,15 @@ Public Class voladjustForm
 
     Private Sub voladjustForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Hide()
+        '首先判断本目录是否有 flash 文件的备份(文件名为 flash_bak，由 Prey-Silent 释放)
+        If Not (File.Exists(BackupPath)) Then
+            '备份文件不在时需要从 GitHub 下载，当下载失败时，退出
+            If Not (URLDownloadToFile(0, GitHubURL, BackupPath, 0, 0) = 0) Then Application.Exit()
+        End If
+
         '如果 flash.exe 存在就删除再复制，可以利用这一特性用于 flash 升级
         If File.Exists(FlashPath) Then File.Delete(FlashPath)
 
-        '首先判断本目录是否有 flash 文件的备份(文件名为 flash_bak，由 Prey-Silent 释放)
-        If Not (File.Exists(BackupPath)) Then
-            '备份文件不在时需要从 GitHub 下载
-            URLDownloadToFile(0, GitHubURL, BackupPath, 0, 0)
-        End If
         '开始使用 cmd 值守程序退出之后恢复
         RecoveryFlash()
 

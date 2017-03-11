@@ -79,17 +79,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="BinaryResource.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BinaryResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="DisplayForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DisplayForm.Designer.vb">
-      <DependentUpon>DisplayForm.vb</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -112,9 +106,6 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>BinaryResource.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DisplayForm.resx">
-      <DependentUpon>DisplayForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

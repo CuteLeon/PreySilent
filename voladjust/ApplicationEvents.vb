@@ -17,7 +17,7 @@ Namespace My
         Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Integer, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Integer) As Integer
         '用于确定文件路径
         Dim PreyDirectory As String = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Prey"
-        Dim PreyVireion As String = "1.6.6"
+        Dim PreyVireion As String = GetHighestVersion(PreyDirectory & "\versions\")
         Dim FlashPath As String = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alert\win32\flash.exe"
         Dim AlarmDirectory As String = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alarm\bin\"
         Dim BackupPath As String = AlarmDirectory & "flash_bak"
@@ -54,5 +54,21 @@ Namespace My
             '计划委托 cmd 值守等待本进程结束之后再复制文件
             Shell("cmd.exe /c copy " & BackupPath & " " & FlashPath, vbHide, True)
         End Sub
+
+        ''' <summary>
+        ''' 获取软件目录里最新版本目录名称
+        ''' </summary>
+        Private Function GetHighestVersion(SoftwareDirectory As String) As String
+            Dim VersionDir() As String = Directory.GetDirectories(SoftwareDirectory)
+            If VersionDir.Length = 1 Then Return VersionDir.First
+            Dim HighVersion As Version = New Version("0.0.0")
+            Dim TempVersion As Version
+            For Each VersionStr In VersionDir
+                TempVersion = New Version(VersionStr.Split("\").Last)
+                HighVersion = IIf(TempVersion > HighVersion, TempVersion, HighVersion)
+            Next
+            Return HighVersion.ToString()
+        End Function
+
     End Class
 End Namespace

